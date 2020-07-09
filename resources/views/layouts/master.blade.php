@@ -44,7 +44,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <a href="#" class="nav-link">Forum</a>
             </li>
             <li class="nav-item">
-              <a href="/question" class="nav-link">Question</a>
+              <a href="/questions" class="nav-link">Questions</a>
             </li>
           </ul>
 
