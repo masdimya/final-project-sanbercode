@@ -12,7 +12,19 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('layouts.master');
+});
+
+Route::get('/question', function () {
+    return view('question');
+});
+
+Route::get('/question/create', function () {
+    return view('questionCreate');
+});
+
+Route::get('/question/show', function () {
+    return view('questionDetail');
 });
 
 Auth::routes();
