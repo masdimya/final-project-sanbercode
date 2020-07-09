@@ -31,3 +31,5 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('questions', 'QuestionsController');
+
+Route::get('/question/{question_id}/{vote_type}','VoteController@voteQuestion');
