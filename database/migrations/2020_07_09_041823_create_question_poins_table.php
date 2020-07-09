@@ -13,7 +13,7 @@ class CreateQuestionPoinsTable extends Migration
      */
     public function up()
     {
-        Schema::create('question_poins', function (Blueprint $table) {
+        Schema::create('question_points', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('question_id');
             $table->unsignedBigInteger('user_id');
