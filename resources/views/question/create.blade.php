@@ -12,6 +12,8 @@
 
 		<input type="hidden" value="{{ Auth::id() }}" name="user_id">
 
+		<input type="hidden" value="0" name="total_vote">
+
 		<div class="form-group">
 			<label for="title">Judul</label>
 			<input type="text" class="form-control" id="title" name="title">	
@@ -22,8 +24,9 @@
 		</textarea>
 		</div>
 		<div class="form-group">
-			<label for="tag">Tag</label>
-			<input type="text" id="tag" name="tag" class="form-control">
+			<label for="tag">Tag*</label>
+			<input type="text" id="tag" name="tag" class="form-control" aria-describedby="tagHelp">
+			<small id="tagHelp" class="form-text text-muted">*Pisahkan tiap tag dengan tanda koma (,)</small>
 		</div>
 		
 		<button type="submit" class="btn btn-primary">Submit</button>

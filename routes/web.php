@@ -11,19 +11,17 @@
 |
 */
 
-Route::get('/', function () {
-    return view('layouts.master');
-});
-
-Route::post('/question/addComment', 'QuestionsController@addComment');
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');
 
 Route::resource('questions', 'QuestionsController')->names([
             'show'  => 'question.show'
         ]);
+
+Route::post('/question/addComment', 'QuestionsController@addComment');
+
+Route::post('/answer/addComment', 'AnswerController@addComment');
 
 Route::get('/question/{question_id}/{vote_type}','VoteController@voteQuestion');
 

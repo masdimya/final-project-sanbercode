@@ -4,10 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Question;
 use App\QuestionComment;
+use App\Tag;
 use Illuminate\Http\Request;
 
 class QuestionsController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -45,8 +57,28 @@ class QuestionsController extends Controller
             'content' => 'required'
         ]);
 
+        $newQuestion = Question::create($request->all());
+
+        $tags = explode(",", $request->tag);
+
+        $tagData = [];
+
+        foreach ($tags as $value) {
+
+            $tag["tag_name"] = $value;
+            $tagData[] = $tag;
+
+        }
+
+        foreach ($tagData as $value) {
+            
+            $tag = Tag::firstOrCreate($value);
+            $newQuestion->tags()->attach($tag->id);
+
+        }
+
         //Simpan dalam table questions
-        Question::create($request->all());
+        
 
         //redirect 
         return redirect('/questions')->with('status', 'Pertanyaan berhasil dibuat!');
@@ -84,10 +116,10 @@ class QuestionsController extends Controller
     public function update(Request $request, Question $question)
     {
         Question::where('id', $question->id)
-                ->update([
-                    'title' => $request->title,
-                    'content' => $request->content
-                ]);
+        ->update([
+            'title' => $request->title,
+            'content' => $request->content
+        ]);
         return redirect('/questions')->with('status', 'Pertanyaan berhasil diubah!');
     }
 

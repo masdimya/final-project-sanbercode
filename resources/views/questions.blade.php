@@ -20,8 +20,12 @@
 		</div>
 		<div class="card-footer">
 
-			<a href="#" class="btn btn-success">value->tag</a>
-				<a href="#" class="btn btn-info"><i class="fa fa-comments" aria-hidden="true"></i>&nbsp;&nbsp;{{$value->total_vote}}</a>
+			@foreach($value->tags as $tag)
+
+			<a href="#" class="btn btn-success">{{$tag->tag_name}}</a>
+
+			@endforeach
+			<a href="#" class="btn btn-info"><i class="fa fa-comments" aria-hidden="true"></i>&nbsp;&nbsp;{{$value->total_vote}}</a>
 			
 		</div>
 	</div>

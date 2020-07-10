@@ -6,9 +6,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Answer;
+use App\AnswerComment;
 
 class AnswerController extends Controller
 {
+    
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     
     /**
      * Store a newly created resource in storage.
@@ -54,5 +65,18 @@ class AnswerController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    // Bagian Komentar
+
+    public function addComment(Request $request)
+    {
+
+        // dd($request->all());
+
+        AnswerComment::create($request->all());
+
+        return redirect("/questions/$request->question_id")->with('status', 'Komentar berhasil dibuat!');
     }
 }
