@@ -8,43 +8,54 @@
 
 	<div class="card">
 
-		<form role="form">
-			<div class="card-body">
-				<h4>Judul</h4>
-				<small>From &nbsp;&nbsp; <span class="badge badge-success">admin</span> &nbsp;&nbsp; 27, feb 2020</small>
+		
+		<div class="card-body">
+			<h4>{{ $question->title }}</h4>
+			<small>From &nbsp;&nbsp; <span class="badge badge-success">{{ $question->user->name }}</span> &nbsp;&nbsp; {{date_format(date_create($question->updated_at),'F, d Y ')}}</small>
 
-				<div class="form-group">
-					<div class="row align-items-center">
-						<div class="col-md-11">
-							<div class="m-3">
-								Isi pertanyaan bos
+			<div class="form-group">
+				<div class="row align-items-center">
+					<div class="col-md-11">
+						<div class="m-3">
+							{{ $question->content }}
+						</div>
+						<hr>
+						<div class="pl-5"> 
+
+							@isset($question->QuestionComment)
+							@foreach($question->QuestionComment as $key => $value)
+							<div class="coment">
+								<h6 class="small">
+									{{$value->comment}} 
+									- <span class="badge badge-primary">{{$value->user->name}}</span> 
+									<span class="text-muted"> {{date_format(date_create($value->updated_at),'F, d Y ')}} </span> 
+								</h6>
+								<hr>
 							</div>
-							<hr>
-							<div class="pl-5"> 
-								<div class="coment">
-									<h6 class="small">
-										Comen Bos 
-										- <span class="badge badge-primary">admin</span> 
-										<span class="text-muted"> 05-01-2020 </span> 
-									</h6>
-									<hr>
-								</div>
+							@endforeach
+							@endisset
 
 
-								<div class="add-comment">
+							<div class="add-comment">
+								<form role="form" action="/question/addComment" method="POST">
+
+									@csrf
+									<input type="hidden" name="question_id" value="{{ $question->id }}">
+									<input type="hidden" value="{{ Auth::id() }}" name="user_id">
 									<input class="border-0 small col-9" type="text" name="comment" placeholder="add comment">
 									<input type="submit" class="btn btn-sm btn-primary small" value="Add Comment">
 									<hr>
-								</div>
+								</form>
 							</div>
 						</div>
 					</div>
-
 				</div>
 
 			</div>
 
-		</form>
+		</div>
+
+		
 		<div class="card-footer">
 			<a href="#" class="btn btn-success">laravel</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<a href="#" class="btn btn-info"><i class="fa fa-star" aria-hidden="true"></i> 16</a>

@@ -15,21 +15,12 @@ Route::get('/', function () {
     return view('layouts.master');
 });
 
-Route::get('/question', function () {
-    return view('question');
-});
-
-Route::get('/question/create', function () {
-    return view('questionCreate');
-});
-
-Route::get('/question/show', function () {
-    return view('questionDetail');
-});
+Route::post('/question/addComment', 'QuestionsController@addComment');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
 Route::resource('questions', 'QuestionsController');
 
 Route::get('/question/{question_id}/{vote_type}','VoteController@voteQuestion');

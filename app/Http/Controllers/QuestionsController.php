@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Question;
+use App\QuestionComment;
 use Illuminate\Http\Request;
 
 class QuestionsController extends Controller
@@ -27,7 +28,7 @@ class QuestionsController extends Controller
     public function create()
     {
         //Memanggil view form create question
-        return view('questions.create');
+        return view('question.create');
     }
 
     /**
@@ -104,4 +105,14 @@ class QuestionsController extends Controller
         //redirect 
         return redirect('/questions')->with('status', 'Pertanyaan berhasil dihapus!');
     }
+
+    // Bagian Komentar
+
+    public function addComment(Request $request)
+    {
+        QuestionComment::create($request->all());
+
+        return redirect("/questions/$request->question_id")->with('status', 'Komentar berhasil dibuat!');
+    }
+
 }

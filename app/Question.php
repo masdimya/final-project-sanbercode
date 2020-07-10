@@ -12,4 +12,8 @@ class Question extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function QuestionComment(){
+        return $this->hasMany(QuestionComment::class);
+    }
 }
