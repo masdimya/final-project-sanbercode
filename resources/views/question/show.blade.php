@@ -11,7 +11,9 @@
 		
 		<div class="card-body">
 			<h4>{{ $question->title }}</h4>
-			<small>From &nbsp;&nbsp; <span class="badge badge-success">{{ $question->user->name }}</span> &nbsp;&nbsp; {{date_format(date_create($question->updated_at),'F, d Y ')}}</small>
+			<small>From &nbsp;&nbsp; 
+				<span class="badge badge-success mr-2">{{ $question->user->name }}</span>
+			    <span class="mr-3"><i class="fa fa-star text-warning" aria-hidden="true"></i> {{$question->user->reputasi}}</span> {{date_format(date_create($question->updated_at),'F, d Y ')}}</small>
 
 			<div class="form-group">
 				<div class="row align-items-center">
@@ -27,8 +29,9 @@
 							<div class="coment">
 								<h6 class="small">
 									{{$value->comment}} 
-									- <span class="badge badge-primary">{{$value->user->name}}</span> 
-									<span class="text-muted"> {{date_format(date_create($value->updated_at),'F, d Y ')}} </span> 
+									- <span class="badge badge-primary">{{$value->user->name}}</span>
+									  <span class="mr-3"><i class="fa fa-star text-warning" aria-hidden="true"></i> {{$value->user->reputasi}}</span> 
+									  <span class="text-muted"> {{date_format(date_create($value->updated_at),'F, d Y ')}} </span> 
 								</h6>
 								<hr>
 							</div>
@@ -56,11 +59,19 @@
 		</div>
 
 		
-		<div class="card-footer">
+		<div class="card-footer d-flex">
 			<a href="#" class="btn btn-success">laravel</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<a href="#" class="btn btn-info"><i class="fa fa-star" aria-hidden="true"></i> 16</a>
-			<a href="#" class="btn btn-danger"><i class="fa fa-thumbs-up" aria-hidden="true"></i> 20</a>
-			<a href="#" class="btn btn-dark"><i class="fa fa-thumbs-down" aria-hidden="true"></i> 4</a>
+			<a href="#" class="btn btn-warning ml-1 mr-1"><i class="fa fa-star" aria-hidden="true"></i> {{$question->total_vote}}</a>
+			<form class="ml-1 mr-1" action="{{route('question.vote',['question_id'=>$question->id,'vote_type'=>'upvote'])}}" method="POST">
+				@csrf
+				
+				<button type="submit" class="btn btn-primary" {{setVoteIndicator($question->question_vote->first(),'upvote')}}><i class="fa fa-thumbs-up" aria-hidden="true"></i> {{$question->question_upvote->count()}}</button>
+				
+			</form>
+			<form class="ml-1 mr-1" action="{{route('question.vote',['question_id'=>$question->id,'vote_type'=>'downvote'])}}" method="POST">
+				@csrf
+				<button type="submit" class="btn btn-danger" {{setVoteIndicator($question->question_vote->first(),'downvote')}} ><i class="fa fa-thumbs-down" aria-hidden="true"></i> {{$question->question_downvote->count()}}</button>
+			</form>
 		</div>
 	</div>
 
@@ -84,7 +95,9 @@
 										</div>
 										<div class="m-3 d-flex">
 											<small class="ml-auto">
-												From &nbsp;&nbsp; <span class="badge badge-success">{{ $answer->user->name }}</span> &nbsp;&nbsp; {{date_format(date_create($answer->updated_at),'F, d Y ')}}
+												From &nbsp;&nbsp; <span class="badge badge-success m-2">{{ $answer->user->name }}</span>
+									  			<span class="mr-3"><i class="fa fa-star text-warning" aria-hidden="true"></i> {{ $answer->user->reputasi}}</span> 
+												&nbsp;&nbsp; {{date_format(date_create($answer->updated_at),'F, d Y ')}}
 											</small>
 										</div>
 										<hr>
@@ -110,12 +123,19 @@
 						</div>
 					</div>
 				</form>
-				<div class="card-footer">
+				<div class="card-footer d-flex">
 					<a href="#" class="btn btn-success">laravel</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<a href="#" class="btn btn-info"><i class="fa fa-star" aria-hidden="true"></i> 16</a>
-					<a href="#" class="btn btn-danger"><i class="fa fa-thumbs-up" aria-hidden="true"></i> 20</a>
-					<a href="#" class="btn btn-dark"><i class="fa fa-thumbs-down" aria-hidden="true"></i> 4</a>
-					<a href="#" class="btn btn-success"><i class="fa fa-certificate" aria-hidden="true"></i> Approved</a>
+					<a href="#" class="btn btn-warning ml-1 mr-1"><i class="fa fa-star" aria-hidden="true"></i> {{$answer->total_vote}}</a>
+					<form class="ml-1 mr-1" action="{{route('answer.vote',['question_id'=>$question->id,'answer_id'=>$answer->id,'vote_type'=>'upvote'])}}" method="POST">
+						@csrf
+						
+						<button type="submit" class="btn btn-primary" {{setVoteIndicator($answer->answer_vote->first(),'upvote')}}><i class="fa fa-thumbs-up" aria-hidden="true"></i> {{$answer->answer_upvote->count()}}</button>
+						
+					</form>
+					<form class="ml-1 mr-1" action="{{route('answer.vote',['question_id'=>$question->id,'answer_id'=>$answer->id,'vote_type'=>'downvote'])}}" method="POST">
+						@csrf
+						<button type="submit" class="btn btn-danger" {{setVoteIndicator($answer->answer_vote->first(),'downvote')}} ><i class="fa fa-thumbs-down" aria-hidden="true"></i> {{$answer->answer_downvote->count()}}</button>
+					</form>
 				</div>
 			</div>
 			@endforeach

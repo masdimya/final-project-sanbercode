@@ -25,7 +25,9 @@ Route::resource('questions', 'QuestionsController')->names([
             'show'  => 'question.show'
         ]);
 
-Route::get('/question/{question_id}/{vote_type}','VoteController@voteQuestion');
+Route::post('/question/{question_id}/{vote_type}','VoteController@voteQuestion')->name('question.vote');
+Route::post('/question/{question_id}/answer/{answer_id}/{vote_type}','VoteController@voteAnswer')->name('answer.vote');
+
 
 Route::resource('answer', 'AnswerController',['only' => ['store','update','destroy']])
         ->names([

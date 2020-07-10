@@ -18,7 +18,7 @@ class CreateTriggerAnswersPointsDelete extends Migration
                                 UPDATE users
                                     SET reputasi = users.reputasi + IF(old.vote, -10, 1)
                                 WHERE users.id IN (SELECT answers.user_id 
-                                                        FROM answer WHERE answer.id = old.answer_id);
+                                                        FROM answers WHERE answers.id = old.answer_id);
 
                                 
                                 UPDATE answers

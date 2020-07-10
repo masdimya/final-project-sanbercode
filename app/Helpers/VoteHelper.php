@@ -7,11 +7,11 @@ trait VoteHelper
 
     public function vote($data,$vote_type,$model)
     {
-        if($vote_type == 'vote'){
+        if($vote_type == 'upvote'){
             $data['vote'] = true;
         }
 
-        if($vote_type == 'devote'){
+        if($vote_type == 'downvote'){
             $data['vote'] = false;
         }
         

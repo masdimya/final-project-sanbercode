@@ -18,7 +18,7 @@ class CreateTriggerAnswerPoints extends Migration
                                 UPDATE users
                                     SET reputasi = users.reputasi + IF(new.vote, 10, -1)
                                 WHERE users.id IN (SELECT answers.user_id 
-                                                        FROM answer WHERE answer.id = new.answer_id);
+                                                        FROM answers WHERE answers.id = new.answer_id);
 
                                 
                                 UPDATE answers
