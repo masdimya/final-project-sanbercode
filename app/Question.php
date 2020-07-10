@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Question extends Model
 {
-    protected $fillable = ['title','content'];
+    protected $fillable = ['title','content', 'user_id', 'total_vote'];
 
     public function user()
     {
@@ -38,8 +38,8 @@ class Question extends Model
         return $this->hasMany(QuestionPoint::class)->where('user_id',Auth::id());
     }
 
-   
-    
-
+    public function tags(){
+        return $this->belongsToMany('App\Tag', 'tag_question', 'question_id', 'tag_id');
+    }
 
 }

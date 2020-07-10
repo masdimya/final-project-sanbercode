@@ -19,7 +19,7 @@
 				<div class="row align-items-center">
 					<div class="col-md-11">
 						<div class="m-3">
-							{{ $question->content }}
+							{!! $question->content !!}
 						</div>
 						<hr>
 						<div class="pl-5"> 
@@ -60,7 +60,11 @@
 
 		
 		<div class="card-footer d-flex">
-			<a href="#" class="btn btn-success">laravel</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			@foreach($question->tags as $tag)
+
+			<a href="#" class="btn btn-success">{{$tag->tag_name}}</a>
+
+			@endforeach
 			<a href="#" class="btn btn-warning ml-1 mr-1"><i class="fa fa-star" aria-hidden="true"></i> {{$question->total_vote}}</a>
 			<form class="ml-1 mr-1" action="{{route('question.vote',['question_id'=>$question->id,'vote_type'=>'upvote'])}}" method="POST">
 				@csrf
@@ -82,6 +86,7 @@
 			<h4>{{count($question->answer)}} Jawaban</h4>
 
 		</div>
+		
 		<div class="card-body">
 			@foreach ($question->answer as $answer)
 			<div class="card">
@@ -101,24 +106,35 @@
 											</small>
 										</div>
 										<hr>
-										<div class="pl-5"> 
-											<div class="coment">
-												<h6 class="small">
-													Comen Bos 
-													- <span class="badge badge-primary">admin</span> 
-													<span class="text-muted"> 05-01-2020 </span> 
-												</h6>
-												<hr>
-											</div>
+											<div class="pl-5"> 
 
+												@isset($answer->comment)
+													@foreach($answer->comment as $key => $value)
+														<div class="coment">
+															<h6 class="small">
+																{{$value->comment}}
+																- <span class="badge badge-primary">{{$value->user->name}}</span> 
+																<span class="text-muted"> {{date_format(date_create($value->updated_at),'F, d Y ')}} </span> 
+															</h6>
+														</div>
+													@endforeach
+												@endisset
+												
 
-											<div class="add-comment">
-												<input class="border-0 small col-9" type="text" name="comment" placeholder="add comment">
-												<input type="submit" class="btn btn-sm btn-primary small" value="Add Comment">
-												<hr>
-											</div>
-										</div>
+									<div class="add-comment">
+										<form role="form" action="/answer/addComment" method="POST">
+
+											@csrf
+											<input type="hidden" name="answer_id" value="{{ $answer->id }}">
+											<input type="hidden" name="question_id" value="{{ $answer->question->id }}">
+											<input type="hidden" value="{{ Auth::id() }}" name="user_id">
+											<input class="border-0 small col-9" type="text" name="comment" placeholder="add comment">
+											<input type="submit" class="btn btn-sm btn-primary small" value="Add Comment">
+											<hr>
+										</form>
 									</div>
+
+								</div>
 							</div>
 						</div>
 					</div>
@@ -136,11 +152,12 @@
 						@csrf
 						<button type="submit" class="btn btn-danger" {{setVoteIndicator($answer->answer_vote->first(),'downvote')}} ><i class="fa fa-thumbs-down" aria-hidden="true"></i> {{$answer->answer_downvote->count()}}</button>
 					</form>
+					<a href="#" class="btn btn-success"><i class="fa fa-certificate" aria-hidden="true"></i> Approved</a>
 				</div>
 			</div>
 			@endforeach
 
-		<form method="POST" action="{{route('answer.add')}}">
+			<form method="POST" action="{{route('answer.add')}}">
 				@csrf
 				<div class="form-group">
 					<label for="answer">Jawab pertanyaan</label>
