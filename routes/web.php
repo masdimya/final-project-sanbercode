@@ -21,6 +21,15 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('questions', 'QuestionsController');
+Route::resource('questions', 'QuestionsController')->names([
+            'show'  => 'question.show'
+        ]);
 
 Route::get('/question/{question_id}/{vote_type}','VoteController@voteQuestion');
+
+Route::resource('answer', 'AnswerController',['only' => ['store','update','destroy']])
+        ->names([
+            'store'    => 'answer.add',
+            'update'   => 'answer.update',
+            'destroy'  => 'answer.delete'
+        ]);

@@ -16,4 +16,8 @@ class Question extends Model
     public function QuestionComment(){
         return $this->hasMany(QuestionComment::class);
     }
+
+    public function answer(){
+        return $this->hasMany(Answer::class);
+    }
 }
