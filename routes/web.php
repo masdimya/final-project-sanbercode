@@ -25,12 +25,15 @@ Route::post('/question/{question_id}/answer/{answer_id}/{vote_type}','VoteContro
 Route::post('/question/addComment', 'QuestionsController@addComment');
 
 Route::post('/answer/addComment', 'AnswerController@addComment');
+Route::post('/answer/{answer_id}/approve', 'AnswerController@approveAnswer')->name('answer.approve');
+
 
 Route::get('/question/{question_id}/{vote_type}','VoteController@voteQuestion');
 
-Route::resource('answer', 'AnswerController',['only' => ['store','update','destroy']])
+Route::resource('answer', 'AnswerController',['only' => ['store','update','destroy','edit']])
         ->names([
             'store'    => 'answer.add',
+            'edit'     => 'answer.edit',
             'update'   => 'answer.update',
             'destroy'  => 'answer.delete'
         ]);

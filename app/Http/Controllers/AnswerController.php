@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use App\User;
 use App\Answer;
 use App\AnswerComment;
 
@@ -53,7 +54,21 @@ class AnswerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
+        $content = $request->input('content');
+
+        $answer = Answer::find($id);
+        $answer->content =  $content;
+        $answer->save();
+
+        return redirect()->route('question.show',['question'=>$answer->question_id]);
+
+    }
+
+    public function edit($answer_id){
+        $answer = Answer::find($answer_id);
+        
+        return view('answer.edit',compact('answer'));
     }
 
     /**
@@ -64,7 +79,8 @@ class AnswerController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Answer::find($id)->delete();
+        return redirect()->route('home');
     }
 
 
@@ -78,5 +94,20 @@ class AnswerController extends Controller
         AnswerComment::create($request->all());
 
         return redirect("/questions/$request->question_id")->with('status', 'Komentar berhasil dibuat!');
+    }
+
+    public function approveAnswer($answer_id)
+    {
+        $answer = Answer::find($answer_id);
+
+        $answer->is_answer = true;
+        $answer->save();
+
+        $user = User::find($answer->user_id);
+        $user->reputasi = $user->reputasi + 15;
+        $user->save();
+
+        return redirect()->route('question.show',['question'=>$answer->question_id]);
+
     }
 }
