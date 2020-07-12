@@ -6,25 +6,25 @@
 
 <div class="container">
 	
-	<form action="/questions" method="POST">
+	<form action="/questions/{{ $question->id }}" method="POST">
 
 		@csrf
+
 		@method('PUT')
 
 		<input type="hidden" value="{{ Auth::id() }}" name="user_id">
 
 		<div class="form-group">
 			<label for="title">Judul</label>
-			<input type="text" class="form-control" id="title" name="title">	
+			<input type="text" class="form-control" id="title" name="title" value="{{$question->title}}">	
 		</div>
 		<div class="form-group">
 			<label for="content">Isi Pertanyaan</label>
-			<textarea name="content" id="content" rows="10" cols="80">
-		</textarea>
+			<textarea name="content" id="content" rows="10" cols="80">{!!$question->content !!}</textarea>
 		</div>
 		<div class="form-group">
 			<label for="tag">Tag</label>
-			<input type="text" id="tag" name="tag" class="form-control">
+			<input type="text" id="tag" name="tag" class="form-control" value="{{ $tags }}">
 		</div>
 		
 		<button type="submit" class="btn btn-primary">Submit</button>

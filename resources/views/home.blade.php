@@ -22,6 +22,46 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
+                    <h5>Your Question</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <tbody>
+                            
+                            @foreach ($questions as $question)
+                            <tr>
+                                <td width="80%">
+                                    <a href="{{route('question.show',['question'=>$question->id])}}">{{$question->title}}</a> <br>
+                                    
+                                    <small class="mr-3">{{date_format(date_create($question->updated_at),'F, d Y ')}} </small>
+                                </td>
+                                <td>
+                                    <a href="{{route('question.show',['question'=>$question->id])}}" class="btn btn-success btn-sm m-1">
+                                    <i class="far fa-eye"></i>
+                                    </a>
+                                    <a href="/questions/{{ $question->id }}/edit" class="btn btn-warning btn-sm m-1">
+                                    <i class="fas fa-pencil-alt"></i>
+                                    </a>
+                                    <form action="/questions/{{ $question->id }}" style="display:inline;" onclick="return confirm('Hapus Pertanyaan Ini?')" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger btn-sm m-1 "><i class="far fa-trash-alt"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @endforeach
+                            
+                            @if($questions->isEmpty())
+                                <h4 class="text-center">You Haven't Made a Question 😥</h4>
+                            @endif
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
                     <h5>Your Answer</h5>
                 </div>
                 <div class="card-body">

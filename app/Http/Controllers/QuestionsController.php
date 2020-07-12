@@ -28,7 +28,7 @@ class QuestionsController extends Controller
     public function index()
     {
         //Mengambil seluruh data pada table questions dan data dikirim beserta view
-        $questions = Question::all();
+        $questions = Question::orderBy('total_vote', 'desc')->get();
         return view('questions', compact('questions'));
     }
 
@@ -104,7 +104,18 @@ class QuestionsController extends Controller
      */
     public function edit(Question $question)
     {
-        return view('question.edit', compact('question'));
+
+        $tag = [];
+
+        foreach ($question->tags as $key => $value) {
+
+            $tag[] = $value->tag_name;
+
+        }
+
+        $tags = implode(",", $tag);
+
+        return view('question.edit', compact('question','tags'));
     }
 
     /**
@@ -116,12 +127,33 @@ class QuestionsController extends Controller
      */
     public function update(Request $request, Question $question)
     {
-        Question::where('id', $question->id)
-        ->update([
-            'title' => $request->title,
-            'content' => $request->content
-        ]);
-        return redirect('/questions')->with('status', 'Pertanyaan berhasil diubah!');
+        $Question = Question::find($question->id);
+        $Question->title = $request->title;
+        $Question->content = $request->content;
+        $Question->save();
+
+        $Question->tags()->detach($Question->tag);
+
+
+        $tags = explode(",", $request->tag);
+
+        $tagData = [];
+
+        foreach ($tags as $value) {
+
+            $tag["tag_name"] = $value;
+            $tagData[] = $tag;
+
+        }
+
+        foreach ($tagData as $value) {
+            
+            $tag = Tag::firstOrCreate($value);
+            $Question->tags()->attach($tag->id);
+
+        }
+
+        return redirect("/")->with('status', 'Pertanyaan berhasil diubah!');
     }
 
     /**

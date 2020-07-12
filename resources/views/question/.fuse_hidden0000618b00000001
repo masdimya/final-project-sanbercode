@@ -138,30 +138,23 @@
 							</div>
 						</div>
 						<div class="card-footer d-flex">
+							<a href="#" class="btn btn-success">laravel</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							<a href="#" class="btn btn-warning ml-1 mr-1"><i class="fa fa-star" aria-hidden="true"></i> {{$answer->total_vote}}</a>
 							<form class="ml-1 mr-1" action="{{route('answer.vote',['question_id'=>$question->id,'answer_id'=>$answer->id,'vote_type'=>'upvote'])}}" method="POST">
 								@csrf
+								
 								<button type="submit" class="btn btn-primary" {{setVoteIndicator($answer->answer_vote->first(),'upvote')}}><i class="fa fa-thumbs-up" aria-hidden="true"></i> {{$answer->answer_upvote->count()}}</button>
+								
 							</form>
 							<form class="ml-1 mr-1" action="{{route('answer.vote',['question_id'=>$question->id,'answer_id'=>$answer->id,'vote_type'=>'downvote'])}}" method="POST">
 								@csrf
 								<button type="submit" class="btn btn-danger" {{setVoteIndicator($answer->answer_vote->first(),'downvote')}} ><i class="fa fa-thumbs-down" aria-hidden="true"></i> {{$answer->answer_downvote->count()}}</button>
 							</form>
-							@if ($answer->is_answer)
-							<p class="ml-2 pt-2 mb-0 text-success"><i class="fa fa-check-circle" aria-hidden="true"></i> Approved</p>
-							@endif
-
-							@if (! $answer->is_answer && $question->user->id == Auth::id())
-							<form action="{{route('answer.approve',['answer_id'=>$answer->id])}}" method="post">
-								@csrf
-								<button class="btn btn-success" > <i class="fa fa-check" aria-hidden="true"></i> Approve Answer</button>
-							</form>
-							@endif
+							<a href="#" class="btn btn-success"><i class="fa fa-certificate" aria-hidden="true"></i> Approved</a>
 						</div>
 					</div>
 					@endforeach
 
-					
 					<form method="POST" action="{{route('answer.add')}}">
 						@csrf
 						<div class="form-group">
@@ -174,9 +167,8 @@
 						<button type="submit" class="btn btn-primary">Submit</button>
 
 					</form>
-					
+
 				</div>
-				
 
 			</div>
 
@@ -189,6 +181,7 @@
 		<script type="text/javascript">
 			
 			CKEDITOR.replace( 'answer' );
+
 		</script>
 
 		@endpush

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Answer;
+use App\Question;
 
 class HomeController extends Controller
 {
@@ -26,7 +27,8 @@ class HomeController extends Controller
     public function index()
     {
         $answers = Answer::where('user_id',Auth::id())->get();
+        $questions = Question::where('user_id',Auth::id())->get();
         
-        return view('home',compact('answers'));
+        return view('home',compact('answers', 'questions'));
     }
 }
